@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Flow Prompts - Romantic Couple Illustration Style</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', 'Noto Sans Bengali', sans-serif;
+    background: linear-gradient(135deg, #f5ead9 0%, #e8d5b7 100%);
+    margin: 0;
+    padding: 24px;
+    color: #4a3728;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  h1 {
+    font-size: 1.8em;
+    color: #6b3f2a;
+    margin-bottom: 6px;
+  }
+  p.sub {
+    color: #7a5c42;
+    font-size: 0.95em;
+  }
+  .toolbar {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .toolbar input {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #c9a876;
+    width: 280px;
+    max-width: 80vw;
+    font-size: 0.95em;
+  }
+  .toolbar button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    background: #8a5a3b;
+    color: white;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+  .toolbar button:hover { background: #6b3f2a; }
+  .tabs { margin-bottom: 14px; }
+  .tab-btn {
+    background: #d9c39e;
+    color: #6b3f2a;
+    font-weight: 600;
+  }
+  .tab-btn.active-tab {
+    background: #8a5a3b;
+    color: white;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card {
+    background: #fffaf2;
+    border: 1px solid #e0c9a6;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 6px rgba(107,63,42,0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .card .num {
+    font-weight: bold;
+    color: #b5793f;
+    font-size: 0.85em;
+    margin-bottom: 6px;
+  }
+  .card .text {
+    font-size: 0.92em;
+    line-height: 1.45;
+    flex-grow: 1;
+    margin-bottom: 10px;
+  }
+  .copy-btn {
+    align-self: flex-start;
+    background: #eaddc4;
+    border: 1px solid #c9a876;
+    color: #6b3f2a;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8em;
+    cursor: pointer;
+  }
+  .copy-btn:hover { background: #d9c39e; }
+  .copy-btn.copied { background: #8a5a3b; color: white; }
+  footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #8a6f52;
+    font-size: 0.85em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌸 Romantic Couple Prompts — Google Flow</h1>
+  <p class="sub">৩০০টি মৌলিক প্রম্পট (৩ স্টাইল × ১০০টি) • বাংলা নস্টালজিক ইলাস্ট্রেশন থিম • অ্যানিমেটেড ভিডিও তৈরির জন্য</p>
+</header>
+
+<div class="toolbar tabs">
+  <button id="tabSmooth" class="tab-btn active-tab" onclick="switchStyle('smooth')">🎨 মসৃণ ইলাস্ট্রেশন (১০০)</button>
+  <button id="tabRough" class="tab-btn" onclick="switchStyle('rough')">✏️ কাঁচা হাতে আঁকা (১০০)</button>
+  <button id="tabBold" class="tab-btn" onclick="switchStyle('bold')">🌬️ ক্লোজ-আপ বোল্ড রঙ, বাতাসে পোশাক (১০০)</button>
+</div>
+
+<div class="toolbar">
+  <input type="text" id="searchBox" placeholder="প্রম্পট খুঁজুন (search)...">
+  <button onclick="copyAll()">সব কপি করুন</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>Style base: soft earthy warm-toned Bengali illustration, saree & panjabi couples, nostalgic village/heritage settings — for use with Google Flow video generation.</footer>
+
+<script>
+const styleBase = "Soft, warm, earthy-toned Bengali illustration art style, hand-painted digital art aesthetic, nostalgic Bengal village and heritage architecture, gentle cinematic lighting, subtle looping motion, romantic and tender mood, 9:16 vertical video";
+
+const prompts = [
+"A young couple sitting on a terrace at dusk, the woman in a red saree gently resting her head on the man's shoulder as string lights flicker to life above them, soft wind moving her hair and the pallu of her saree",
+"A man in a white panjabi slowly tucking a jasmine flower into his wife's hair on a rainy balcony, raindrops sliding down the window glass behind them, warm lamplight glowing indoors",
+"Two lovers sitting cross-legged on an old wooden veranda floor, sharing a cup of tea, steam rising gently, a caged bird swinging softly in the background",
+"A couple walking hand in hand under a canopy of red gulmohar flowers on a quiet village road, petals drifting down slowly in the breeze",
+"A woman leaning out of a vintage train window as her partner on the platform reaches up to hand her a single flower, steam gently rising from the train",
+"A man and woman standing under a large black umbrella in the rain, water pooling at their feet, streetlight flickering behind them",
+"A couple sitting by a riverbank at golden hour, the woman resting her chin on her knees looking at the water while the man watches her quietly",
+"A newlywed couple in traditional wedding attire, the groom softly touching the bride's chin as marigold garlands sway gently between them",
+"A man writing a letter by candlelight while his wife leans over his shoulder, watching him write, her bangles catching the warm glow",
+"A couple sitting on a rooftop under moonlight, the man pointing towards the stars while the woman looks up in wonder, her dupatta fluttering",
+"A woman in a blue saree standing at an open window, staring wistfully into the rain, her husband approaching quietly behind her with a shawl",
+"Two people sitting close on a park bench under a large banyan tree, sunlight filtering through the leaves and dancing across their faces",
+"A man gently wiping tears from his wife's cheek in a dimly lit room, her eyes closed, a single candle flickering nearby",
+"A couple slow dancing barefoot in an old courtyard under fairy lights, the woman's saree twirling gently as she spins",
+"A husband placing a warm shawl over his wife's shoulders as they sit together watching the sunset from a stone balcony",
+"A young couple sharing an umbrella while walking through a flooded monsoon street, splashing gently through puddles, laughing together",
+"A woman sitting on a swing under a mango tree, her partner pushing the swing gently as flowers fall around them",
+"A couple sitting at a small tea stall table at night, steam rising from clay cups, their hands almost touching on the wooden table",
+"A man tying a red thread bracelet on his wife's wrist during a quiet festival evening, diyas glowing warmly around them",
+"A couple standing at a ferry ghat at sunrise, the woman resting her head against the man's arm as boats drift on the water behind them",
+"A woman braiding flowers into her hair while her husband watches lovingly from across a sunlit courtyard",
+"A couple sitting inside an old library, the man reading aloud while the woman rests her head on the table, listening with closed eyes",
+"A husband carrying his wife piggyback through a rice field at sunset, both laughing as the wind moves through the golden crops",
+"A couple standing face to face in the rain, foreheads gently touching, water dripping from their hair",
+"A woman resting against her husband's chest on a train seat, his hand gently stroking her hair as the countryside blurs past the window",
+"A man kneeling to tie his wife's ghungroo before a dance performance, both smiling softly at each other backstage",
+"A couple sitting on the steps of an old temple at dusk, sharing a quiet conversation as pigeons flutter around them",
+"A woman looking back over her shoulder at her husband as they walk through a narrow alley decorated with hanging lanterns",
+"A husband and wife sitting together on a boat, the woman trailing her fingers in the water as the man rows slowly under a pink sky",
+"A couple embracing tightly at a railway platform just before departure, the woman clutching his kurta as the train whistle blows",
+"A man adjusting his wife's earring gently in front of an old mirror, candlelight flickering across the room",
+"A couple lying on a rooftop terrace looking up at the stars, their hands intertwined, a gentle breeze moving the potted plants nearby",
+"A woman feeding her husband a sweet by hand during a festival celebration, both laughing, flower petals scattered on the table",
+"A husband gently lifting his wife's veil during a wedding ceremony, candle flames flickering softly around the mandap",
+"A couple standing under a flowering tree as petals fall like snow, the woman catching one in her palm and showing it to him",
+"A man playing a harmonium softly while his wife sits beside him humming along, warm afternoon light filling the room",
+"A couple sharing a quiet breakfast at a small wooden table, sunlight streaming through lace curtains, steam rising from their cups",
+"A woman resting her head on her husband's lap under a tree, him gently running his fingers through her hair as leaves rustle above",
+"A couple standing at the edge of a lotus pond at dawn, mist rising slowly from the water around them",
+"A man wrapping his arms around his wife from behind at a kitchen counter, both smiling as morning light pours through the window",
+"A couple walking through a marketplace decorated for Durga Puja, holding hands, string lights glowing warmly above the street",
+"A woman adjusting her husband's collar before he leaves for work, both smiling gently at the front door of an old house",
+"A couple sitting on a houseboat drifting along a calm river at sunset, the woman leaning her head on his shoulder",
+"A husband gently placing a bindi on his wife's forehead in front of a mirror, morning light softly illuminating the room",
+"A couple standing on a balcony overlooking a monsoon-soaked city, sharing an umbrella as thunder rumbles softly in the distance",
+"A woman spinning playfully in her new saree while her husband watches with admiration in a sunlit courtyard",
+"A couple sitting together under a large red umbrella at a rainy bus stop, waiting quietly, shoulders touching",
+"A man softly kissing his wife's forehead as she rests in his arms in a dimly lit bedroom, moonlight streaming through the window",
+"A couple riding a bicycle together through a quiet countryside road, the woman sitting on the back holding onto him, hair flowing in the wind",
+"A husband and wife lighting oil lamps together during Diwali evening, their faces glowing warmly in the candlelight",
+"A woman resting her forehead against her husband's during a slow embrace in the rain, both eyes closed, water streaming down their faces",
+"A couple sitting on an old stone bench feeding pigeons together, sunlight breaking through clouds above an old fort",
+"A man gently tucking a strand of hair behind his wife's ear as they sit close on a garden swing at twilight",
+"A couple standing together at a riverside ghat during evening aarti, diya flames reflecting in the water around them",
+"A woman playfully splashing water at her husband during a rain shower in the courtyard, both laughing joyfully",
+"A husband carrying grocery bags while his wife walks beside him, both talking and laughing on a quiet evening street",
+"A couple sitting close on a jute mat in an old village home, sharing a plate of food, oil lamp flickering nearby",
+"A woman resting her hand on her husband's chest as they slow dance in candlelight, curtains gently swaying from the breeze",
+"A couple standing under a starry sky in an open field, the man wrapping a blanket around both their shoulders",
+"A husband gifting his wife a single red rose at a garden gate, both smiling shyly at each other",
+"A woman peeking through a window curtain smiling as she watches her husband arrive home, evening light glowing softly",
+"A couple sharing a quiet moment on a train platform bench, the woman's head resting on the man's shoulder as the sun sets behind them",
+"A man softly humming a tune while his wife rests against his back, both sitting on a rooftop watching the city lights below",
+"A couple walking together through a foggy tea garden at sunrise, mist swirling gently around their footsteps",
+"A husband gently massaging his wife's tired feet after a long day, both sitting on the floor of a cozy lantern-lit room",
+"A woman laughing as her husband spins her around in an old courtyard filled with fallen autumn leaves",
+"A couple sitting together on the roof of an old house watching kites fly across the evening sky",
+"A man handing an umbrella to his wife as she steps out into the rain, both smiling warmly at the doorway",
+"A couple resting together in a hammock under a mango tree, gently swaying as sunlight filters through the leaves",
+"A woman gently placing her palm against her husband's cheek as they sit facing each other by candlelight",
+"A couple standing at the edge of a wheat field at sunset, the wind moving through the golden stalks around them",
+"A husband gently guiding his wife's hand as she learns to paint, both smiling as color spreads across the canvas",
+"A woman resting her head against a train window while her husband sleeps beside her, city lights blurring past outside",
+"A couple sharing a warm blanket on a winter evening balcony, steam rising from their cups of tea, stars twinkling above",
+"A husband softly wiping raindrops from his wife's face under a shared umbrella at a busy street corner",
+"A woman gently adjusting flowers in a vase while her husband watches her fondly from the doorway of their home",
+"A couple sitting together at the edge of a rooftop pool at dusk, city lights beginning to twinkle around them",
+"A man softly whispering into his wife's ear as she smiles, both standing at a festival lit with hundreds of small lamps",
+"A couple standing together under a large tree during a sudden rain, sheltering close as leaves shake around them",
+"A husband gently holding his wife's hand as they cross a narrow wooden bridge over a quiet stream",
+"A woman leaning against a doorway smiling as her husband returns home with flowers, evening golden light spilling in",
+"A couple sitting quietly on a hillside overlooking a valley at sunrise, sharing a thermos of tea between them",
+"A man gently placing his forehead against his wife's during a quiet slow dance under string lights in the garden",
+"A woman resting her chin on her husband's shoulder while he steers a small boat through calm evening waters",
+"A couple sitting close under a striped awning during a sudden downpour, watching the rain together with warm smiles",
+"A husband tenderly brushing his wife's hair as she sits before a mirror in the soft light of morning",
+"A couple laughing together while walking through a lantern-lit street market during a festival evening",
+"A woman resting in her husband's arms on a porch swing as fireflies begin to glow around them at dusk",
+"A couple standing close at the edge of a cliff overlooking the sea, wind blowing through their hair as the sun sets",
+"A husband gently placing a shawl over his sleeping wife's shoulders on a cozy train journey at night",
+"A couple sharing an intimate glance across a crowded festival, the noise fading as they focus only on each other",
+"A woman playfully teasing her husband with a flower held near his nose, both smiling in a sunlit garden",
+"A couple sitting together on the floor of an old library surrounded by stacks of books, sharing a quiet laugh",
+"A husband gently kissing his wife's hand as they sit together on the steps of an old heritage building at dusk",
+"A woman resting her head on her husband's shoulder as they watch fireworks together from a rooftop at night",
+"A couple standing beneath a flowering jacaranda tree, purple petals gently falling around them as they embrace",
+"A husband softly guiding his wife through a slow waltz in an empty ballroom lit by candlelight",
+"A couple sitting together on a jetty at sunset, their feet dangling above the water as boats drift by slowly",
+"A woman resting her palm on her husband's heart as they sit quietly together watching the rain from a window seat",
+"A couple embracing warmly at the doorway of an old ancestral home, golden evening light framing them softly",
+"A husband and wife walking together through a misty tea garden path at dawn, holding hands, quiet mountains in the distance"
+];
+
+const styleBaseRough = "Rough, sketchy, amateur hand-drawn illustration style, visible pencil and crayon strokes, imperfect wobbly linework, childlike naive charm, unrefined shading, notebook doodle aesthetic, warm nostalgic Bengal village and heritage setting, soft gentle looping motion, romantic and tender mood, 9:16 vertical video";
+
+const promptsRough = [
+"A couple sitting on a doodled terrace at dusk, wobbly crayon-style string lights above them, the woman's sketchy saree pallu fluttering in rough pencil-strokes of wind",
+"A man in a scribbly panjabi tucking a rough sketch of a jasmine flower into his wife's hair, uneven raindrop lines sliding down a hand-drawn window",
+"Two lovers on a crudely sketched wooden veranda, sharing a lopsided cup of tea, wobbly steam lines curling upward, a rough scribble of a caged bird swaying",
+"A couple walking hand in hand under childlike scribbled red flowers on a shaky-lined village road, uneven petal shapes drifting down",
+"A woman leaning out of a rough sketch train window, her partner on a wobbly platform reaching up with a crayon-drawn flower, sketchy steam puffs",
+"A man and woman under a lopsided hand-drawn umbrella in scribbled rain, uneven puddle shapes at their feet, a flickering rough streetlight",
+"A couple by a roughly sketched riverbank at golden hour, the woman's knees drawn in loose pencil lines, wobbly water ripples nearby",
+"A newlywed couple in simply sketched wedding attire, uneven marigold garland loops swaying between crudely drawn hands",
+"A man writing with a scratchy pencil line by candlelight, his wife leaning over in rough outline, her bangles a few quick circular scribbles",
+"A couple on a rooftop under a childlike scribbled moon, the man's arm a simple line pointing at hand-drawn stars, her dupatta a loose wavy line",
+"A woman in a roughly colored blue saree at a crooked window, sketchy rain streaks outside, her husband a simple outline approaching with a shawl",
+"Two people on a wobbly bench under a scribbled banyan tree, uneven patches of sunlight sketched falling across their simply drawn faces",
+"A man wiping a rough teardrop shape from his wife's cheek in a dim room, a single wobbly candle flame flickering nearby",
+"A couple dancing barefoot in a sketchy courtyard, crayon fairy lights strung unevenly, her saree drawn twirling in loose swirl lines",
+"A husband placing a roughly sketched shawl over his wife's shoulders, both simple silhouettes watching a crudely colored sunset",
+"A young couple under one wobbly umbrella in a scribbled flooded street, uneven splash marks around their feet, loose smiling faces",
+"A woman on a hand-drawn swing under a mango tree, her partner's arm a simple line pushing gently, rough flower shapes falling",
+"A couple at a lopsided tea stall table at night, wobbly steam curls rising from crudely sketched clay cups, hands almost touching",
+"A man tying a rough red thread on his wife's wrist, a few scribbled diyas glowing with simple flame shapes around them",
+"A couple at a crudely drawn ferry ghat at sunrise, the woman's head resting on his arm, wobbly boat outlines on scribbled water",
+"A woman braiding a few loose flower scribbles into her hair, her husband a simple smiling outline watching from across a sketched courtyard",
+"A couple in a rough sketch of an old library, the man's mouth open mid-read, the woman's head resting on the table in loose pencil lines",
+"A husband carrying his wife piggyback through a wobbly rice field, both drawn mid-laugh, scribbled wind lines through the crop",
+"A couple face to face in scribbled rain, foreheads touching, uneven drip lines falling from rough hair outlines",
+"A woman resting against her husband on a crudely sketched train seat, his hand a simple stroke on her hair, blurry pencil scenery outside",
+"A man kneeling with a simple loop tying his wife's ghungroo, both faces drawn with soft rough smile lines backstage",
+"A couple on the steps of a wobbly sketched temple at dusk, a few scribbled pigeons fluttering around their simply drawn forms",
+"A woman glancing back over her shoulder in loose linework as they walk through an alley of crudely drawn hanging lanterns",
+"A husband and wife on a rough sketch of a boat, her fingers trailing in wobbly water lines as he rows under a scribbled pink sky",
+"A couple embracing tightly at a hand-drawn railway platform, her fingers clutching his kurta in quick expressive pencil strokes",
+"A man adjusting his wife's earring in front of a roughly outlined mirror, a wobbly candle flame flickering across the sketch",
+"A couple lying on a rooftop looking up at a handful of scribbled stars, their hands drawn intertwined in loose linework",
+"A woman feeding her husband a sweet by hand at a festival, both mid-laugh in rough sketch style, scattered petal scribbles on the table",
+"A husband lifting his wife's veil in simple pencil strokes, a few wobbly candle flames flickering around a roughly drawn mandap",
+"A couple under a scribbled flowering tree, uneven petal shapes falling like loose snow, the woman's palm a simple open outline",
+"A man playing a roughly sketched harmonium, his wife's mouth a small hum-shaped line beside him in warm crayon light",
+"A couple at a small wobbly wooden table, sketchy lace curtain lines letting in loose sunlight streaks, steam curling from rough cups",
+"A woman's head resting on her husband's lap under a tree, his fingers a few simple lines through her rough-sketched hair",
+"A couple at the edge of a roughly drawn lotus pond at dawn, wobbly mist lines rising slowly around simple flower shapes",
+"A man's arms wrapped around his wife from behind at a sketchy kitchen counter, loose morning light lines pouring through a crooked window",
+"A couple walking through a scribbled Durga Puja market, string lights drawn as uneven dots glowing above a wobbly street",
+"A woman adjusting her husband's collar with a simple hand outline, both smiling in loose pencil lines at a crudely drawn door",
+"A couple on a rough sketch houseboat drifting on a wavy-lined river at sunset, her head resting on his shoulder in loose strokes",
+"A husband placing a rough bindi dot on his wife's forehead in front of a crookedly drawn mirror, soft scribbled morning light",
+"A couple on a wobbly balcony sharing one umbrella in scribbled monsoon rain, a few jagged lightning lines in the distance",
+"A woman spinning in her new saree drawn in loose swirling strokes, her husband's simple smiling outline watching nearby",
+"A couple under a rough red umbrella at a hand-drawn bus stop, uneven rain lines falling, shoulders touching in simple linework",
+"A man kissing his wife's forehead in a dim sketched bedroom, a wobbly moonbeam line falling through a crooked window",
+"A couple on a wobbly bicycle through a scribbled countryside road, her hair drawn flowing in loose wavy pencil lines",
+"A husband and wife lighting a few rough oil lamp scribbles during Diwali, their faces warmly shaded in crayon glow",
+"A woman's forehead against her husband's in scribbled rain, both eyes closed, uneven water streak lines on rough faces",
+"A couple on an old stone bench feeding a few simply drawn pigeons, sunlight sketched breaking through clouds above a rough fort outline",
+"A man tucking a strand of hair behind his wife's ear on a wobbly garden swing at twilight, loose pencil linework throughout",
+"A couple at a riverside ghat during evening aarti, a handful of scribbled diya flames reflected in wavy water lines",
+"A woman splashing water at her husband in a rough sketched courtyard rain shower, both mid-laugh in loose expressive strokes",
+"A husband carrying grocery bags beside his wife, both talking in simple rough outlines on a quiet sketched evening street",
+"A couple sitting close on a jute mat in a crudely drawn village home, a wobbly oil lamp flickering nearby, plate of food roughly sketched",
+"A woman's hand resting on her husband's chest as they slow dance, curtains drawn swaying in a few loose scribbled lines",
+"A couple under a scribbled starry sky in an open field, a rough blanket line wrapped around both their shoulders",
+"A husband gifting his wife a single roughly sketched rose at a wobbly garden gate, both drawn smiling shyly",
+"A woman peeking through a rough curtain line smiling as her husband arrives home, evening light sketched in soft glow strokes",
+"A couple on a train platform bench in loose pencil lines, her head resting on his shoulder as a crudely drawn sun sets behind them",
+"A man humming while his wife rests against his back, both sitting on a rooftop watching a few scribbled city light dots below",
+"A couple walking through a foggy tea garden at sunrise, wobbly mist swirls drawn gently around their simple footstep lines",
+"A husband massaging his wife's tired feet, both sitting on the floor of a cozily sketched lantern-lit room",
+"A woman laughing as her husband spins her in a rough courtyard, a scatter of loosely drawn autumn leaves around them",
+"A couple on the roof of an old sketched house watching a few kite shapes fly across a loosely colored evening sky",
+"A man handing an umbrella to his wife stepping into scribbled rain, both smiling warmly at a roughly drawn doorway",
+"A couple resting in a wobbly hammock under a mango tree, gently swaying with loose sunlight-filtered pencil strokes",
+"A woman placing her palm against her husband's cheek, both faces sketched facing each other by a rough candlelight glow",
+"A couple at the edge of a scribbled wheat field at sunset, loose wind-lines moving through the golden stalks around them",
+"A husband guiding his wife's hand as she learns to paint, a smear of loose color spreading across a roughly drawn canvas",
+"A woman's head against a train window while her husband sleeps beside her, city lights blurred into simple dashed lines outside",
+"A couple sharing a rough blanket on a winter balcony, steam curling from crudely drawn cups, a few scribbled stars twinkling above",
+"A husband wiping raindrops from his wife's face under one shared umbrella at a busy sketched street corner",
+"A woman adjusting flowers in a roughly drawn vase, her husband's simple smiling outline watching from a crooked doorway",
+"A couple sitting at the edge of a rooftop pool at dusk, a few scribbled city light dots beginning to twinkle around them",
+"A man whispering into his wife's ear, both drawn standing at a festival lit with a scatter of small hand-drawn lamps",
+"A couple sheltering together under a scribbled tree during sudden rain, loose leaf shapes shaking around simple outlines",
+"A husband holding his wife's hand crossing a wobbly wooden bridge over a roughly sketched stream",
+"A woman leaning against a crooked doorway smiling as her husband returns home with a few rough flower scribbles",
+"A couple sitting quietly on a hillside overlooking a loosely sketched valley at sunrise, sharing a simple thermos outline",
+"A man placing his forehead against his wife's during a slow dance under a few scribbled string lights in the garden",
+"A woman's chin resting on her husband's shoulder as he steers a small hand-drawn boat through wavy evening water lines",
+"A couple under a striped hand-drawn awning during sudden downpour, watching scribbled rain together with loose warm smiles",
+"A husband brushing his wife's hair as she sits before a roughly sketched mirror in soft morning crayon light",
+"A couple laughing together walking through a lantern-lit street market, lanterns drawn as simple glowing dot shapes",
+"A woman resting in her husband's arms on a wobbly porch swing as a few firefly dots begin to glow at dusk",
+"A couple standing close at the edge of a roughly sketched cliff overlooking the sea, loose wind-lines through their hair",
+"A husband placing a rough shawl over his sleeping wife's shoulders on a cozy hand-drawn train journey at night",
+"A couple sharing an intimate glance across a crowded festival scene, the background loosely scribbled and blurred around them",
+"A woman teasing her husband with a roughly drawn flower near his nose, both smiling in a simply sketched sunny garden",
+"A couple sitting on the floor of an old sketched library, surrounded by a stack of simple rectangle-shaped books, sharing a laugh",
+"A husband kissing his wife's hand on the steps of a roughly outlined heritage building at dusk",
+"A woman's head on her husband's shoulder watching a scatter of scribbled fireworks from a rooftop at night",
+"A couple beneath a flowering tree, loose purple petal scribbles falling gently around their simple embracing outlines",
+"A husband guiding his wife through a slow waltz in an empty sketched ballroom lit by a few wobbly candle flames",
+"A couple sitting together on a jetty at sunset, their feet dangling above loosely sketched water as a boat drifts by",
+"A woman's palm resting on her husband's heart as they sit quietly watching scribbled rain from a rough window seat",
+"A couple embracing warmly at the doorway of a roughly sketched ancestral home, golden light drawn in loose glow strokes",
+"A husband and wife walking through a misty tea garden path at dawn, wobbly mountain outlines quiet in the distance"
+];
+
+const styleBaseBold = "Tight subject-focused illustration, amateur self-taught artist style, medium close-up composition cropping just above the waist, subject fills most of the frame with minimal or softly blurred simple background, bold flat saturated color palette (deep maroon, mustard yellow, ochre, teal, burnt orange, indigo), thick confident outlines, raw unrefined naive shading with visible flat color blocks, hair and saree pallu and dupatta and kurta fabric constantly flowing and billowing in strong wind, expressive intimate close faces, romantic and tender mood, gentle looping wind motion animation, 9:16 vertical video";
+
+const promptsBold = [
+"Close-up of a couple standing chest to chest, the woman's long hair and saree pallu whipping sideways in strong wind, the man's kurta sleeve fluttering as he cups her face",
+"Medium shot of a woman in a bold teal saree, her dupatta streaming upward in the wind as her husband gently tucks a loose strand of her wind-blown hair behind her ear",
+"Close framing on a couple foreheads almost touching, both their hair blowing in the same direction in a gust of wind, mustard yellow background blurred softly behind them",
+"A woman's maroon saree pallu caught mid-flutter in the wind as her partner holds her waist, both faces filling most of the frame in warm ochre light",
+"Tight close-up of a man's white kurta billowing dramatically in the wind as he leans in to kiss his wife's forehead, her hair streaming sideways",
+"A couple in profile close-up, the woman's braid and loose flyaway hairs whipped by wind, the man's shawl fluttering off one shoulder as he watches her",
+"Medium shot of a woman laughing, head tilted back, her hair and orange dupatta flying wildly around her face, her husband's hand gently on her cheek",
+"Close-up portrait of a couple embracing, both garments rippling in bold flat-color wind streaks, deep indigo background with minimal detail",
+"A woman's blue saree fabric caught mid-flap against a burnt orange sky, close framing on her and her husband's intertwined hands near her collarbone",
+"Tight shot of a man's beard and hair tousled by wind as his wife's dupatta wraps momentarily around his arm, both smiling closely at each other",
+"Close-up of a couple's faces almost touching, the woman's flower-tucked hair strands lifting in the wind, bold mustard background with no distracting details",
+"Medium close framing on a woman spinning slightly, her red saree pallu flaring out behind her in a bold arc of wind, husband watching with a soft close-up smile",
+"A couple pressed close together, the man's loose kurta collar flapping open in the wind, the woman's hand resting on his chest, tight cropped composition",
+"Close-up of a woman's face turned into the wind, eyes closed, her hair streaming across the frame, her husband's hand gently steadying her flying dupatta",
+"Tight portrait shot of a couple, the woman's teal saree pallu wrapping around both their shoulders as wind gusts past them, flat bold color background",
+"Close framing on a man softly holding his wife's windblown hair back from her face, her earrings swinging slightly, deep maroon backdrop",
+"A woman's yellow dupatta caught fully airborne behind her in the wind, close-up on her joyful expression as her husband reaches for her hand",
+"Medium shot of a couple's intertwined arms, both their garments rippling sideways in a strong gust, bold flat orange sky filling the background",
+"Close-up on a woman's face nuzzled into her husband's neck, his shawl and her hair both blown in the same wind direction, minimal indigo backdrop",
+"Tight cropped shot of a couple mid-embrace, the woman's saree pallu flying upward dramatically, thick bold outlines against a flat mustard wall",
+"Close-up portrait of a man gently blowing a stray hair off his wife's cheek as her dupatta flutters wildly beside them, warm ochre tones",
+"A woman's hair whipping fully sideways across the frame in close-up as her husband's hand cups her jaw, bold teal background with no clutter",
+"Medium close shot of a couple, the man's kurta and the woman's saree both caught in the same gust of wind, faces tilted close together",
+"Close-up of a woman's earring swinging as wind lifts her hair straight up, her husband's fingers gently brushing it back, deep maroon flat backdrop",
+"Tight framing on a couple's clasped hands and windblown sleeves, faces just visible at the top of frame, bold burnt orange color block behind them",
+"Close-up of a woman laughing with her head turned into the wind, her blue dupatta trailing far behind her, husband's face close beside hers",
+"A man's loose shawl snapping in the wind behind him as he leans his forehead against his wife's, tight close-up composition, mustard flat background",
+"Close-up portrait of a couple, the woman's hair fully airborne in a bold wind gust, her husband smiling as he watches her, minimal ochre backdrop",
+"Medium shot of a woman's saree pallu flying dramatically to one side as she leans into her husband's chest, both faces tightly framed",
+"Close-up of a man's kurta collar and sleeves rippling in strong wind as he softly touches his wife's chin, deep indigo flat color background",
+"Tight cropped shot on a couple's faces, the woman's flower-adorned hair streaming sideways, husband's hand resting gently on her windblown shoulder",
+"Close-up of a woman spinning with her red dupatta flaring fully outward, her husband captured mid-laugh just behind her shoulder",
+"Medium close framing on a couple embracing tightly, both their garments whipped in the same direction by wind, bold teal flat backdrop",
+"Close-up portrait of a man's beard and hair tousled dramatically as his wife's saree pallu wraps briefly across his shoulder in the wind",
+"Tight shot of a woman's face turned toward her husband, hair streaming past both their faces in the wind, mustard yellow flat color background",
+"Close-up of a couple's clasped hands raised slightly, sleeves and pallu both caught mid-flutter, deep maroon minimal backdrop",
+"Medium close-up on a woman's joyful expression as wind lifts her entire dupatta into a wide arc behind her, husband close at her side",
+"Close-up of a man gently holding his wife's face as her hair and earrings both sway from a strong gust, flat ochre background with no clutter",
+"Tight framing on a couple's foreheads touching, both their garments rippling outward symmetrically in the wind, bold indigo backdrop",
+"Close-up portrait of a woman's teal saree fabric flying upward as she leans back slightly into her husband's supporting arm",
+"Medium shot of a couple standing close, the man's shawl fully airborne behind him, the woman's hair whipped across her smiling face",
+"Close-up of a woman's flower-tucked braid unraveling slightly in wind, her husband's fingers gently reaching to smooth it, warm mustard tones",
+"Tight cropped shot on a couple's intertwined fingers near the woman's chest, her dupatta trailing dramatically off frame in the wind",
+"Close-up of a man's kurta sleeve billowing as he wraps his arm fully around his wife, her saree pallu whipped sideways, bold orange backdrop",
+"Medium close-up on a woman's laughing face turned skyward, hair fully airborne, husband's hand gently on her windblown waist",
+"Close-up portrait of a couple nose to nose, both their hair strands crossing mid-air in the wind, deep teal flat color background",
+"Tight framing on a woman's earrings and loose hair swinging as her husband cups her face, her saree pallu a bold streak behind her",
+"Close-up of a man's beard catching wind as he tilts his head to kiss his wife's temple, her dupatta flaring fully to one side",
+"Medium shot of a couple embracing, the woman's braid whipped horizontally by wind, husband's kurta rippling in the same direction",
+"Close-up of a woman's face pressed gently against her husband's shoulder, both their garments caught in a synchronized gust of wind",
+"Tight cropped portrait of a couple, the man's shawl snapping dramatically behind him as the woman's hair streams across his chest",
+"Close-up of a woman spinning joyfully, her yellow saree a full bold arc around her, husband captured just at the frame's edge smiling",
+"Medium close-up on a couple's clasped hands raised near their faces, sleeves and pallu both whipped in the same wind direction",
+"Close-up portrait of a man gently steadying his wife's flying dupatta with one hand, both faces close together, flat maroon backdrop",
+"Tight framing on a woman's hair fully airborne behind her as she leans her forehead against her husband's, bold mustard color block",
+"Close-up of a couple's intertwined arms, the woman's saree pallu curling dramatically upward in the wind between them",
+"Medium shot of a man's kurta collar flapping open as he embraces his wife tightly, her hair whipped sideways across both their faces",
+"Close-up portrait of a woman's flower-adorned hair streaming in wind as her husband's fingers gently brush her cheek, ochre backdrop",
+"Tight cropped shot of a couple's faces almost touching, both their garments rippling outward in a strong symmetrical gust of wind",
+"Close-up of a man's shawl fully airborne behind him as he cups his wife's chin, her earrings swinging gently, deep indigo flat backdrop",
+"Medium close-up on a woman's joyful spin, her red dupatta a wide bold arc, husband's hand reaching to catch her fluttering sleeve",
+"Close-up portrait of a couple embracing tightly, the woman's braid whipped fully to one side, husband's kurta rippling in unison",
+"Tight framing on a woman's face turned into the wind, eyes closed in bliss, her husband's hand gently on her windblown shoulder",
+"Close-up of a man's beard and loose kurta both caught in a strong gust as his wife leans into his chest, saree pallu flying behind her",
+"Medium shot of a couple's clasped hands near the woman's collarbone, both their sleeves and pallu whipped dramatically sideways",
+"Close-up portrait of a woman's earrings and hair swinging as her husband gently blows a loose strand off her cheek, teal backdrop",
+"Tight cropped shot on a couple foreheads touching, the woman's saree pallu curling fully upward between them in the wind",
+"Close-up of a man's shawl snapping behind him as he softly kisses his wife's forehead, her hair streaming past both their faces",
+"Medium close-up on a woman's laughing expression, her dupatta a bold flat-colored arc trailing behind her, husband close beside her",
+"Close-up portrait of a couple's intertwined fingers raised near their chins, sleeves and pallu both whipped in the same wind gust",
+"Tight framing on a woman's hair fully airborne as her husband gently cups her jaw, both faces filling most of the frame, mustard backdrop",
+"Close-up of a man's kurta collar rippling as he embraces his wife from behind, her hair and dupatta both streaming forward in the wind",
+"Medium shot of a couple standing close, the woman's braid whipped horizontally, husband's shawl fluttering off one shoulder simultaneously",
+"Close-up portrait of a woman's flower-tucked hair unraveling in wind as her husband's fingers gently reach to smooth it, ochre tones",
+"Tight cropped shot of a couple's faces nose to nose, both their garments caught mid-flutter in a strong synchronized gust",
+"Close-up of a man's beard catching wind as his wife's saree pallu wraps briefly around his arm, both smiling closely together",
+"Medium close-up on a woman's joyful face turned skyward, her hair fully airborne, husband's hand gently steadying her waist",
+"Close-up portrait of a couple embracing, the woman's earrings and loose hair swinging gently, husband's kurta rippling in unison",
+"Tight framing on a woman's dupatta flaring fully to one side as she leans her forehead against her husband's, deep maroon backdrop",
+"Close-up of a man's shawl fully airborne behind him as he gently touches his wife's chin, her hair streaming sideways across the frame",
+"Medium shot of a couple's clasped hands near the woman's chest, both their sleeves and pallu whipped dramatically by the same gust",
+"Close-up portrait of a woman spinning, her teal saree a wide bold arc around her, husband captured mid-laugh at the frame's edge",
+"Tight cropped shot on a couple's foreheads touching, both their hair strands crossing mid-air in a strong wind gust, mustard backdrop",
+"Close-up of a man's kurta sleeve billowing as he wraps his arm around his wife, her braid whipped fully to one side in the wind",
+"Medium close-up on a woman's face pressed against her husband's shoulder, both their garments caught in a synchronized gust of wind",
+"Close-up portrait of a couple nose to nose, the woman's flower-adorned hair streaming past both their faces, deep teal backdrop",
+"Tight framing on a woman's saree pallu curling dramatically upward between her and her husband as they embrace closely",
+"Close-up of a man's beard and loose kurta both caught in a strong gust as he softly kisses his wife's temple, her dupatta flaring wide",
+"Medium shot of a couple embracing tightly, the woman's hair whipped sideways across both their faces in a bold gust of wind",
+"Close-up portrait of a woman's earrings swinging as her husband gently cups her face, her saree pallu a bold streak behind her",
+"Tight cropped shot of a couple's clasped hands raised near their chins, both their sleeves and pallu whipped in the same direction",
+"Close-up of a man's shawl snapping dramatically behind him as his wife leans into his chest, her hair streaming forward in the wind",
+"Medium close-up on a woman's joyful spin, her yellow dupatta a wide bold arc trailing behind her, husband reaching for her hand",
+"Close-up portrait of a couple embracing, both their garments rippling outward symmetrically in a strong gust, ochre flat backdrop",
+"Tight framing on a woman's face turned into the wind, her husband's hand gently on her windblown shoulder, deep indigo backdrop",
+"Close-up of a man's kurta collar flapping open as he holds his wife close, her braid and dupatta both streaming in the same direction",
+"Medium shot of a couple's intertwined fingers near the woman's collarbone, sleeves and pallu whipped dramatically sideways together",
+"Close-up portrait of a woman's flower-tucked hair streaming in wind as her husband gently blows a loose strand off her cheek",
+"Tight cropped shot on a couple's foreheads almost touching, the woman's saree pallu curling fully upward in a bold gust between them",
+"Close-up of a man's shawl fully airborne as he softly touches his wife's chin, her earrings swinging gently, mustard flat backdrop",
+"Medium close-up on a couple's clasped hands raised near their faces, both their garments whipped in perfect unison by the wind"
+];
+
+const grid = document.getElementById('grid');
+
+function buildPrompt(text) {
+  const base = currentStyle === 'rough' ? styleBaseRough : (currentStyle === 'bold' ? styleBaseBold : styleBase);
+  return base + ". Scene: " + text + ".";
+}
+
+function render(list) {
+  grid.innerHTML = '';
+  list.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    const full = buildPrompt(item.text);
+    card.innerHTML = `
+      <div class="num">প্রম্পট #${item.num}</div>
+      <div class="text">${full}</div>
+      <button class="copy-btn" onclick="copyOne(this, \`${full.replace(/`/g, "'")}\`)">📋 কপি করুন</button>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+let currentStyle = 'smooth';
+let allItems = prompts.map((p, i) => ({ num: i + 1, text: p }));
+render(allItems);
+
+function switchStyle(style) {
+  currentStyle = style;
+  document.getElementById('tabSmooth').classList.toggle('active-tab', style === 'smooth');
+  document.getElementById('tabRough').classList.toggle('active-tab', style === 'rough');
+  document.getElementById('tabBold').classList.toggle('active-tab', style === 'bold');
+  const sourceArr = style === 'rough' ? promptsRough : (style === 'bold' ? promptsBold : prompts);
+  allItems = sourceArr.map((p, i) => ({ num: i + 1, text: p }));
+  document.getElementById('searchBox').value = '';
+  render(allItems);
+}
+
+function copyOne(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ কপি হয়েছে!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 কপি করুন';
+      btn.classList.remove('copied');
+    }, 1500);
+  });
+}
+
+function copyAll() {
+  const allText = allItems.map(item => `${item.num}. ${buildPrompt(item.text)}`).join('\n\n');
+  navigator.clipboard.writeText(allText).then(() => {
+    alert('সবগুলো প্রম্পট কপি হয়ে গেছে!');
+  });
+}
+
+document.getElementById('searchBox').addEventListener('input', function(e) {
+  const q = e.target.value.toLowerCase();
+  const filtered = allItems.filter(item => item.text.toLowerCase().includes(q));
+  render(filtered);
+});
+</script>
+
+</body>
+</html>
